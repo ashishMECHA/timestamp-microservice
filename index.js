@@ -32,37 +32,64 @@ app.get("/api", function (req, res) {
     );
 });
 
-
 app.get("/api/:date", (req,res)=>{
-  let date_String = req.params.date;
+  const date_string = req.params.date;
+  let d;
 
-  if(parseInt(date_String) > 10000) {
-    let unixTime = new Date(parseInt(date_String))
-    res.json(
-      {"unix" : unixTime.getTime(),
-      "utc" : unixTime.toUTCString()}
-    )
+  if(date_string) {
+    if(isNaN(date_string)){   // If date is a string value
+      d = new Date(date_string)
+    }
+    else{
+      d = new Date(parseInt(date_string)) // If date is in integer
+    }
   }
-
-  let passedInValue = new Date(date_String);
-  if(passedInValue == "Invalid Date"){
-    res.json({"error" : "Invalid Date"});
-  }
-  else {
+  
+  if(d.toString() !== 'Invalid Date'){
     res.json(
-    {"unix" : passedInValue.getTime(),
-    "utc" : passedInValue.toUTCString()}
-  )
-  } 
-})
+       { "unix" : d.getTime(),
+     "utc" : d.toUTCString() })
+    
+  } else{
+    res.json({ "error" : "Invalid Date" });
+  }
+  
+});
 
-// app.get("/api/:time",(req,res)=>{
-//   let time_Str = req.params.time;
-//   let utcTime = new Date(time_Str*1000)
-//   res.json({
-//     "unix": time_Str,
-//     "utc" : utcTime
-//   })
+
+
+
+
+
+
+
+
+
+
+// app.get("/api/:date", (req,res)=>{
+//   let date_String = req.params.date;
+
+
+//   let passedInValue = new Date(date_String);
+//   if(passedInValue == "Invalid Date"){
+
+//     if(parseInt(date_String) > 10000) {
+//       let unixTime = new Date(parseInt(date_String))
+//       res.json(
+//         {"unix" : unixTime.getTime(),
+//         "utc" : unixTime.toUTCString()}
+//       )
+  
+//     } else{
+//       res.json({"error" : "Invalid Date"});
+//     }
+//   }
+//   else {
+//     res.json(
+//     {"unix" : passedInValue.getTime(),
+//     "utc" : passedInValue.toUTCString()}
+//   )
+//   } 
 // })
 
 
